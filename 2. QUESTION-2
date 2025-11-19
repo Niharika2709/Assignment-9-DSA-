@@ -1,0 +1,100 @@
+2. Implement priority queues using heaps. 
+
+
+
+#include <iostream>
+using namespace std;
+
+class PriorityQueue {
+    int arr[100];
+    int size;
+
+public:
+    PriorityQueue() {
+        size = 0;
+    }
+
+  
+    void heapifyUp(int index) {
+        int parent = (index - 1) / 2;
+
+        if (index > 0 && arr[parent] < arr[index]) {
+            swap(arr[parent], arr[index]);
+            heapifyUp(parent);
+        }
+    }
+
+  
+    void heapifyDown(int index) {
+        int left  = 2 * index + 1;
+        int right = 2 * index + 2;
+        int largest = index;
+
+        if (left < size && arr[left] > arr[largest])
+            largest = left;
+
+        if (right < size && arr[right] > arr[largest])
+            largest = right;
+
+        if (largest != index) {
+            swap(arr[index], arr[largest]);
+            heapifyDown(largest);
+        }
+    }
+
+    void push(int value) {
+        arr[size] = value;
+        size++;
+        heapifyUp(size - 1);
+    }
+
+   
+    void pop() {
+        if (size == 0) {
+            cout << "Priority Queue is empty!\n";
+            return;
+        }
+
+        arr[0] = arr[size - 1];
+        size--;
+        heapifyDown(0);
+    }
+
+   
+    int top() {
+        if (size == 0) {
+            cout << "Priority Queue is empty!\n";
+            return -1;
+        }
+        return arr[0];
+    }
+
+    void display() {
+        for (int i = 0; i < size; i++)
+            cout << arr[i] << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    PriorityQueue pq;
+
+    pq.push(40);
+    pq.push(10);
+    pq.push(30);
+    pq.push(50);
+    pq.push(60);
+
+    cout << "Priority Queue (Max-Heap): ";
+    pq.display();
+
+    cout << "Top element: " << pq.top() << endl;
+
+    cout << "Deleting top element...\n";
+    pq.pop();
+
+    cout << "Priority Queue after deletion: ";
+    pq.display();
+
+    return 0;
+}
